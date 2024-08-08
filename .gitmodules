@@ -1,0 +1,3 @@
+[submodule "plugin/analyzer_query"]
+	path = plugin/analyzer_query
+	url = https://github.com/1623040547/analyzer_query.git
