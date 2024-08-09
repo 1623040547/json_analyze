@@ -1,8 +1,8 @@
-import 'package:json_analyze/proto_to_freeze/meta.dart';
+import 'meta.dart';
 
 ///基本数据类型的定义
 @proto
-class BaseParam {
+class BaseProtoExample {
   ///非空类型
   int a1 = 0;
   String a2 = "";
@@ -26,12 +26,13 @@ class BaseParam {
 
 ///复杂数据类型的定义
 @proto
-class UnionParam {
+class UnionProtoExample {
   ///非空类型
-  BaseParam baseParam = BaseParam();
-  List<BaseParam> baseParams = [];
+  ///带默认值
+  BaseProtoExample baseParam = BaseProtoExample();
+  List<BaseProtoExample> baseParams = [];
 
   ///可空类型
-  BaseParam? baseParamNullable;
-  List<BaseParam>? baseParamsNullable;
+  BaseProtoExample? baseParamNullable;
+  List<BaseProtoExample>? baseParamsNullable;
 }

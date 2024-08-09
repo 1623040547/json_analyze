@@ -9,6 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  json_annotation: 4.9.0
+  freezed_annotation: 2.4.4
   analyzer_query:
     path: ./plugin/analyzer_query
 
@@ -16,7 +18,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.0
+  flutter_lints: 3.0.0
 
 flutter:
   uses-material-design: true
