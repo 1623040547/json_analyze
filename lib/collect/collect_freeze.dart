@@ -69,7 +69,12 @@ class FreezeCollect {
   }
 
   void _getParams(ClassMember member) {
-    if (member is! ConstructorDeclaration) return;
+    if (member is FieldDeclaration) {
+      params.add(_handleFieldDeclarationParameter(member));
+    }
+    if (member is! ConstructorDeclaration || member.factoryKeyword == null) {
+      return;
+    }
     String? directedName = member.redirectedConstructor?.type.name2.toString();
     String constructorName = member.returnType.name;
     if (directedName == null || "_$constructorName" != directedName) return;
@@ -92,12 +97,14 @@ class FreezeCollect {
     }
     if (param is SimpleFormalParameter) {
       return JsonSerializeParam(
-          token: param.testToken(file),
-          type: param.type?.toString() ?? '',
-          name: param.name?.toString() ?? '',
-          annotation: param.metadata.metaString,
-          defaultValue: defaultValue ?? _handleInnerAnnotation(param.metadata),
-          comment: param.documentationComment?.commentString);
+        token: param.testToken(file),
+        type: param.type?.toString() ?? '',
+        name: param.name?.toString() ?? '',
+        annotation: param.metadata.metaString,
+        defaultValue: defaultValue ?? _handleInnerAnnotation(param.metadata),
+        comment: param.documentationComment?.commentString,
+        isFactory: true,
+      );
     }
     if (param is FunctionTypedFormalParameter) {
       throw JsonAnalyzeException(
@@ -107,6 +114,29 @@ class FreezeCollect {
       throw JsonAnalyzeException("Field parameter is disabled in freezed");
     }
     throw JsonAnalyzeException("Unknown parameter type.");
+  }
+
+  JsonSerializeParam _handleFieldDeclarationParameter(FieldDeclaration dec) {
+    assert(dec.fields.variables.length == 1);
+    assert(dec.fields.type != null);
+    if (dec.fields.variables.length != 1) {
+      throw JsonAnalyzeException(
+          "This plugin handle FieldDeclaration when variables' count equal 1");
+    }
+    String paramName = dec.fields.variables.first.name.toString();
+    String? defaultValue1 = dec.fields.variables.first.initializer?.toString();
+    String? defaultValue2 = _handleInnerAnnotation(dec.metadata);
+    assert(defaultValue1 == null || defaultValue2 == null);
+    return JsonSerializeParam(
+      token: dec.testToken(file),
+      type: dec.fields.type.toString(),
+      name: paramName,
+      comment: dec.documentationComment?.commentString,
+      annotation: dec.metadata.metaString,
+      isStatic: dec.isStatic,
+      defaultValue: defaultValue1 ?? defaultValue2,
+      isFactory: false,
+    );
   }
 
   ///处理注解@[Default]与@[JsonKey],返回其中的[defaultValue]

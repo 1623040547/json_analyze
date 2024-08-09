@@ -43,10 +43,13 @@ class JsonSerializeParam {
 
   final bool isStatic;
 
+  final bool isFactory;
+
   JsonSerializeParam({
     required this.token,
     required this.type,
     required this.name,
+    required this.isFactory,
     this.defaultValue,
     this.comment,
     this.annotation,
@@ -74,6 +77,7 @@ class JsonSerializeParam {
         return true;
       case "":
       case "null":
+
         ///检测类型声明是否遗漏
         throw JsonAnalyzeException("Param miss TypeAnnotation ${token.name}");
       default:

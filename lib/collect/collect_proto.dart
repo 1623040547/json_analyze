@@ -54,6 +54,7 @@ JsonSerializeData? _visit({
         defaultValue: dec.initializer?.toString(),
         comment: member.documentationComment?.commentString,
         token: member.testToken(file),
+        isFactory: false,
       ),
     );
   }

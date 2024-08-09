@@ -109,12 +109,14 @@ class JsonSerializableCollect {
     if (param is FieldFormalParameter) {
       String paramName = param.name.toString();
       return JsonSerializeParam(
-          token: param.testToken(file),
-          type: param.type?.toString() ?? '',
-          name: paramName,
-          annotation: param.metadata.metaString,
-          defaultValue: defaultValue,
-          comment: param.documentationComment?.commentString);
+        token: param.testToken(file),
+        type: param.type?.toString() ?? '',
+        name: paramName,
+        annotation: param.metadata.metaString,
+        defaultValue: defaultValue,
+        comment: param.documentationComment?.commentString,
+        isFactory: false,
+      );
     }
     if (param is FunctionTypedFormalParameter) {
       throw JsonAnalyzeException(
@@ -147,6 +149,7 @@ class JsonSerializableCollect {
       annotation: dec.metadata.metaString,
       isStatic: dec.isStatic,
       defaultValue: defaultValue1 ?? defaultValue2,
+      isFactory: false,
     );
   }
 
