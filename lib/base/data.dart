@@ -3,7 +3,7 @@ import 'package:analyzer_query/tester.dart';
 import 'package:json_analyze/base/meta.dart';
 
 class JsonSerializeData {
-  final TestToken token;
+  final TestToken classToken;
 
   final DartFile file;
 
@@ -21,7 +21,7 @@ class JsonSerializeData {
     required this.file,
     required this.className,
     required this.params,
-    required this.token,
+    required this.classToken,
     required this.constructors,
     required this.methods,
     required this.annotation,

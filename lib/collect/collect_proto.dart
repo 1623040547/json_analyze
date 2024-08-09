@@ -38,11 +38,11 @@ JsonSerializeData? _visit({
   required TestToken token,
 }) {
   if (node is! Annotation || node.name.name != "proto") return null;
-  final parent = node.parent;
-  if (parent is! ClassDeclaration) return null;
-  String className = parent.name.toString();
+  final classNode = node.parent;
+  if (classNode is! ClassDeclaration) return null;
+  String className = classNode.name.toString();
   List<JsonSerializeParam> params = [];
-  for (var member in parent.members) {
+  for (var member in classNode.members) {
     assert(member is FieldDeclaration);
     if (member is! FieldDeclaration) continue;
     assert(member.fields.variables.length == 1);
@@ -61,7 +61,7 @@ JsonSerializeData? _visit({
     file: file,
     className: className,
     params: params,
-    token: parent.testToken(file),
+    classToken: classNode.testToken(file),
     constructors: [],
     methods: [],
     annotation: token.name,

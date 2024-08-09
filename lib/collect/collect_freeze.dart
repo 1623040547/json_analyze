@@ -61,7 +61,7 @@ class FreezeCollect {
       file: file,
       className: className,
       params: params,
-      token: classNode.testToken(file),
+      classToken: classNode.testToken(file),
       methods: methods,
       constructors: constructors,
       annotation: token.name,
