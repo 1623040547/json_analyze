@@ -150,8 +150,10 @@ class JsonSerializeMethod {
 
 class JsonSerializeConstructor {
   final TestToken token;
+  final bool isFactory;
 
   JsonSerializeConstructor({
     required this.token,
+    this.isFactory = false,
   });
 }

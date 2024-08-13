@@ -175,6 +175,7 @@ class FreezeCollect {
     constructors.add(
       JsonSerializeConstructor(
         token: member.testToken(file),
+        isFactory: member.factoryKeyword != null,
       ),
     );
   }
