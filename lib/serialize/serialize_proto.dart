@@ -13,6 +13,9 @@ import '../base/data.dart';
 ///在[@proto]下，关键字`final`,`const`,`static`下的变量不会被考虑到序列化之中，
 ///你可以通过私有变量'_'来控制变量的对外可写性
 class ProtoSerialize {
+  ///所有的可序列化对象
+  final List<String> compares;
+
   final List<JsonSerializeData> datas;
 
   ///生成文件' .g.dart '的文本缓存
@@ -21,7 +24,10 @@ class ProtoSerialize {
   ///原始文件' .dart '的文本缓存
   final Map<DartFile, String> _fileMaps = {};
 
-  ProtoSerialize(this.datas);
+  ProtoSerialize(
+    this.datas, {
+    required this.compares,
+  });
 
   void start() {
     for (var data in datas.reversed) {
@@ -127,6 +133,9 @@ class ProtoSerialize {
       if (param.isStatic || param.isConst || param.isFinal) {
         continue;
       }
+      if (!param.isBaseParam && !compares.contains(param.realType)) {
+        throw JsonAnalyzeException("Unknown Type: ${param.realType}");
+      }
       String paramName = param.name;
       String jsonName = param.jsonName;
       String question = param.isQuestion ? '?' : '';
@@ -152,6 +161,9 @@ class ProtoSerialize {
     for (var param in data.params) {
       if (param.isStatic || param.isConst || param.isFinal) {
         continue;
+      }
+      if (!param.isBaseParam && !compares.contains(param.realType)) {
+        throw JsonAnalyzeException("Unknown Type: ${param.realType}");
       }
       String paramName = param.name;
       String jsonName = param.jsonName;
@@ -205,6 +217,9 @@ class ProtoSerialize {
     for (var param in data.params) {
       if (param.isStatic || param.isConst || param.isFinal) {
         continue;
+      }
+      if (!param.isBaseParam && !compares.contains(param.realType)) {
+        throw JsonAnalyzeException("Unknown Type: ${param.realType}");
       }
       String paramName = param.name;
       String jsonName = param.jsonName;
