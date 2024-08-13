@@ -10,9 +10,7 @@ import '../base/meta.dart';
 ///@[JsonKey]
 ///从Dart文件中获取需要的含有注解@[JsonSerializable]的数据
 List<JsonSerializeData> collectJsonData() {
-  final projDart =
-      ProjectDart(PackageConfig.fromProj("/Users/mac/StudioProjects/soulumi"));
-  projDart
+  rootDart
     ..acceptPack = (pack) {
       return !pack.isThirdLib;
     }
@@ -23,9 +21,9 @@ List<JsonSerializeData> collectJsonData() {
     ..acceptDartString = (fileString) {
       return fileString.contains("JsonSerializable");
     };
-  projDart.flush();
+  rootDart.flush();
   List<JsonSerializeData> datas = [];
-  for (var file in projDart.files) {
+  for (var file in rootDart.files) {
     final collect = JsonSerializableCollect(file);
     TestFile.fromFile(
       file.filePath,
@@ -179,6 +177,8 @@ class JsonSerializableCollect {
     methods.add(
       JsonSerializeMethod(
         token: member.testToken(file),
+        methodName: member.name.toString(),
+        isStatic: member.isStatic,
       ),
     );
   }

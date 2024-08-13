@@ -17,6 +17,8 @@ class JsonSerializeData {
 
   final List<JsonSerializeMethod> methods;
 
+  final List<JsonSerializeRedirect> redirects;
+
   JsonSerializeData({
     required this.file,
     required this.className,
@@ -25,6 +27,27 @@ class JsonSerializeData {
     required this.constructors,
     required this.methods,
     required this.annotation,
+    this.redirects = const [],
+  });
+}
+
+class JsonSerializeRedirect {
+  final TestToken token;
+
+  final String redirectName;
+
+  final bool isPart;
+
+  final bool isPartOf;
+
+  final bool isImport;
+
+  JsonSerializeRedirect({
+    required this.token,
+    required this.redirectName,
+    this.isPart = false,
+    this.isPartOf = false,
+    this.isImport = false,
   });
 }
 
@@ -54,11 +77,23 @@ class JsonSerializeParam {
     this.comment,
     this.annotation,
     this.isStatic = false,
-  });
+  }) {
+    if (isMap) {
+      throw JsonAnalyzeException("Map is not permitted in @proto");
+    }
+  }
 
   bool get isQuestion => defaultValue == null;
 
   bool get isUnionParam => !isBaseParam;
+
+  bool get isList => type.startsWith('List<');
+
+  bool get isMap => type.startsWith('Map<');
+
+  String get realType {
+    return type.replaceAll('List<', '').replaceAll('>', '').replaceAll('?', '');
+  }
 
   bool get isBaseParam {
     String switchType = type;
@@ -88,9 +123,13 @@ class JsonSerializeParam {
 
 class JsonSerializeMethod {
   final TestToken token;
+  final String methodName;
+  final bool isStatic;
 
   JsonSerializeMethod({
     required this.token,
+    required this.methodName,
+    required this.isStatic,
   });
 }
 

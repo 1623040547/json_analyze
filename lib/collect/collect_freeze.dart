@@ -164,6 +164,8 @@ class FreezeCollect {
     methods.add(
       JsonSerializeMethod(
         token: member.testToken(file),
+        methodName: member.name.toString(),
+        isStatic: member.isStatic,
       ),
     );
   }
