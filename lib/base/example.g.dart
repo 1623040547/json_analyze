@@ -26,6 +26,8 @@ Map<String, dynamic> _$UnionProtoExampleToJson(UnionProtoExample instance) => {
       'baseParamNullable': instance.baseParamNullable?.toJson(),
       'baseParamsNullable':
           instance.baseParamsNullable?.map((e) => e.toJson()).toList(),
+      'e2': instance._e2,
+      '_e2': instance.__e2,
     }..removeWhere((key, value) => value == null);
 
 UnionProtoExample _$UnionProtoExampleFromJson(Map<String, dynamic> json) {
@@ -52,7 +54,23 @@ UnionProtoExample _$UnionProtoExampleFromJson(Map<String, dynamic> json) {
     instance.baseParamsNullable =
         baseParamsNullable.map((e) => BaseProtoExample.fromJson(e)).toList();
   }
+  double? e2 = _getType<double>(json['e2']);
+  if (e2 != null) {
+    instance._e2 = e2;
+  }
+
+  double? _e2 = _getType<double>(json['_e2']);
+  if (_e2 != null) {
+    instance.__e2 = _e2;
+  }
+
   return instance;
+}
+
+extension UnionProtoExampleGetExtension on UnionProtoExample {
+  double? get e2 => _e2;
+
+  double? get _e2 => __e2;
 }
 
 Map<String, dynamic> _$BaseProtoExampleToJson(BaseProtoExample instance) => {
@@ -72,6 +90,7 @@ Map<String, dynamic> _$BaseProtoExampleToJson(BaseProtoExample instance) => {
       'd2': instance.d2,
       'd3': instance.d3,
       'd4': instance.d4,
+      'e1': instance._e1,
     }..removeWhere((key, value) => value == null);
 
 BaseProtoExample _$BaseProtoExampleFromJson(Map<String, dynamic> json) {
@@ -148,5 +167,14 @@ BaseProtoExample _$BaseProtoExampleFromJson(Map<String, dynamic> json) {
   if (d4 != null) {
     instance.d4 = d4;
   }
+  int? e1 = _getType<int>(json['e1']);
+  if (e1 != null) {
+    instance._e1 = e1;
+  }
+
   return instance;
+}
+
+extension BaseProtoExampleGetExtension on BaseProtoExample {
+  int get e1 => _e1;
 }

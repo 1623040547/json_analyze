@@ -5,13 +5,14 @@ import 'base/example.dart';
 import 'collect/collect_proto.dart';
 
 void main() {
-  // List<JsonSerializeData> datas = collectProtoData();
-  // ProtoSerialize(datas).start();
+  List<JsonSerializeData> datas = collectProtoData();
+  ProtoSerialize(datas).start();
   // BaseProtoExample.fromJson({});
-  final model = BaseProtoExample.fromJson({
-    'a1': 1,
-    'a2': 2,
-    'a3': 3.0,
-  });
-  print(model.toJson());
+  // final model = BaseProtoExample.fromJson({
+  //   'a1': 1,
+  //   'a2': 2,
+  //   'a3': 3.0,
+  // });
+  // print(model.toJson());
+  BaseProtoExample.fromJson({}).e1;
 }

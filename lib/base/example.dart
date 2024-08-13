@@ -1,4 +1,5 @@
 import 'meta.dart';
+
 part 'example.g.dart';
 
 ///基本数据类型的定义
@@ -24,6 +25,8 @@ class BaseProtoExample {
   List<double>? d3;
   List<bool>? d4;
 
+  int _e1 = 0;
+
   static BaseProtoExample fromJson(Map<String, dynamic> json) =>
       _$BaseProtoExampleFromJson(json);
 
@@ -41,6 +44,10 @@ class UnionProtoExample {
   ///可空类型
   BaseProtoExample? baseParamNullable;
   List<BaseProtoExample>? baseParamsNullable;
+
+  double? _e2;
+
+  double? __e2;
 
   static UnionProtoExample fromJson(Map<String, dynamic> json) =>
       _$UnionProtoExampleFromJson(json);

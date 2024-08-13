@@ -91,8 +91,17 @@ class JsonSerializeParam {
 
   bool get isMap => type.startsWith('Map<');
 
+  bool get isPrivate => name.startsWith('_');
+
   String get realType {
     return type.replaceAll('List<', '').replaceAll('>', '').replaceAll('?', '');
+  }
+
+  String get jsonName {
+    if (isPrivate) {
+      return name.substring(1);
+    }
+    return name;
   }
 
   bool get isBaseParam {

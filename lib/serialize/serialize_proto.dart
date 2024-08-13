@@ -8,10 +8,10 @@ import '../base/data.dart';
 class ProtoSerialize {
   final List<JsonSerializeData> datas;
 
-  ///[DartFile] : [fileString]
+  ///生成文件' .g.dart '的文本缓存
   final Map<DartFile, String> _genFileMaps = {};
 
-  ///[DartFile] : [fileString]
+  ///原始文件' .dart '的文本缓存
   final Map<DartFile, String> _fileMaps = {};
 
   ProtoSerialize(this.datas);
@@ -41,6 +41,7 @@ class ProtoSerialize {
     });
   }
 
+  ///若@[proto]下尚未填写[fromJson]或[toJson]方法，则为之填充
   void _fillMethod(JsonSerializeData data) {
     String classMethod = "";
     String fileString = _fileMaps[data.file]!;
@@ -67,6 +68,7 @@ class ProtoSerialize {
     _fileMaps[data.file] = fileString;
   }
 
+  ///若@[proto]下尚未填写' .g.part '的定位符，则为之填充
   void _fillPart(JsonSerializeData data) {
     String partDirect = "";
     String partName = "${data.file.fileName}.g.dart";
@@ -98,6 +100,7 @@ class ProtoSerialize {
     );
   }
 
+  ///生成' .g.part '文件
   void generateFile(JsonSerializeData data) {
     DartFile key = data.file;
     if (!_genFileMaps.containsKey(key)) {
@@ -106,21 +109,24 @@ class ProtoSerialize {
     }
     _genFileMaps[key] = _genFileMaps[key]! + _genToJson(data);
     _genFileMaps[key] = _genFileMaps[key]! + _genFromJson(data);
+    _genFileMaps[key] = _genFileMaps[key]! + _genPrivateGetter(data);
   }
 
+  ///生成[toJson]函数
   String _genToJson(JsonSerializeData data) {
     String className = data.className;
     String params = '';
     for (var param in data.params) {
       String paramName = param.name;
+      String jsonName = param.jsonName;
       String question = param.isQuestion ? '?' : '';
       if (param.isBaseParam) {
-        params += "'$paramName':instance.$paramName,\n";
+        params += "'$jsonName':instance.$paramName,\n";
       } else if (param.isUnionParam && param.isList) {
         params +=
-            "'$paramName': instance.$paramName$question.map((e) => e.toJson()).toList(),\n";
+            "'$jsonName': instance.$paramName$question.map((e) => e.toJson()).toList(),\n";
       } else {
-        params += "'$paramName': instance.$paramName$question.toJson(),\n";
+        params += "'$jsonName': instance.$paramName$question.toJson(),\n";
       }
     }
     String methodString =
@@ -129,42 +135,44 @@ class ProtoSerialize {
     return methodString;
   }
 
+  ///生成[fromJson]函数
   String _genFromJson(JsonSerializeData data) {
     String className = data.className;
     String params = '';
     for (var param in data.params) {
       String paramName = param.name;
+      String jsonName = param.jsonName;
       String realClass = param.realType;
       if (param.isBaseParam && param.isList) {
         params += """
-        List<$realClass>? $paramName = _getList<$realClass>(json['$paramName']);
-        if($paramName != null) {
-          instance.$paramName = $paramName;
+        List<$realClass>? $jsonName = _getList<$realClass>(json['$jsonName']);
+        if($jsonName != null) {
+          instance.$paramName = $jsonName;
         }
         """;
       } else if (param.isUnionParam && param.isList) {
         params += """
-        List<Map<String, dynamic>>? $paramName =
-            _getList<Map<String, dynamic>>(json['$paramName']);
-        if($paramName != null) {
-          instance.$paramName = $paramName.map((e) => $realClass.fromJson(e))
+        List<Map<String, dynamic>>? $jsonName =
+            _getList<Map<String, dynamic>>(json['$jsonName']);
+        if($jsonName != null) {
+          instance.$paramName = $jsonName.map((e) => $realClass.fromJson(e))
           .toList();
         }
         """;
       } else if (param.isBaseParam && !param.isList) {
         params += """
-        $realClass? $paramName = 
-             _getType<$realClass>(json['$paramName']);
-        if ($paramName != null) {
-          instance.$paramName = $paramName;
+        $realClass? $jsonName = 
+             _getType<$realClass>(json['$jsonName']);
+        if ($jsonName != null) {
+          instance.$paramName = $jsonName;
         }\n
         """;
       } else if (param.isUnionParam && !param.isList) {
         params += """
-        Map<String, dynamic>? $paramName =
-            _getType<Map<String, dynamic>>(json['$paramName']);
-        if ($paramName != null) {
-          instance.$paramName = $realClass.fromJson($paramName);
+        Map<String, dynamic>? $jsonName =
+            _getType<Map<String, dynamic>>(json['$jsonName']);
+        if ($jsonName != null) {
+          instance.$paramName = $realClass.fromJson($jsonName);
         }
         """;
       }
@@ -175,6 +183,25 @@ class ProtoSerialize {
         "$params"
         "return instance;"
         "}\n\n\n";
+    return methodString;
+  }
+
+  String _genPrivateGetter(JsonSerializeData data) {
+    String className = data.className;
+    String params = '';
+    for (var param in data.params) {
+      String paramName = param.name;
+      String jsonName = param.jsonName;
+      String className = param.type;
+      if (param.isPrivate) {
+        params += '$className get $jsonName => $paramName;\n\n\n';
+      }
+    }
+    String methodString = """
+   \n\n\nextension ${className}GetExtension on $className {
+        $params
+    }
+    \n\n\n""";
     return methodString;
   }
 
