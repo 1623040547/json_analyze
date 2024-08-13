@@ -28,6 +28,8 @@ Map<String, dynamic> _$UnionProtoExampleToJson(UnionProtoExample instance) => {
           instance.baseParamsNullable?.map((e) => e.toJson()).toList(),
       'e2': instance._e2,
       '_e2': instance.__e2,
+      'e3': instance.e3,
+      'e4': instance.e4,
     }..removeWhere((key, value) => value == null);
 
 UnionProtoExample _$UnionProtoExampleFromJson(Map<String, dynamic> json) {
@@ -62,6 +64,16 @@ UnionProtoExample _$UnionProtoExampleFromJson(Map<String, dynamic> json) {
   double? _e2 = _getType<double>(json['_e2']);
   if (_e2 != null) {
     instance.__e2 = _e2;
+  }
+
+  double? e3 = _getType<double>(json['e3']);
+  if (e3 != null) {
+    instance.e3 = e3;
+  }
+
+  double? e4 = _getType<double>(json['e4']);
+  if (e4 != null) {
+    instance.e4 = e4;
   }
 
   return instance;

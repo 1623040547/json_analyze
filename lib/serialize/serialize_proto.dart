@@ -2,9 +2,16 @@ import 'dart:io';
 
 import 'package:analyzer_query/proj_path/dart_file.dart';
 import 'package:analyzer_query/tester.dart';
+import 'package:json_analyze/base/example.dart';
+import 'package:json_analyze/base/meta.dart';
 
 import '../base/data.dart';
 
+///序列化[@proto]注解下的类，
+///允许序列化类型仅包含[BaseProtoExample]和[UnionProtoExample]下所展现的数据类型。
+///
+///在[@proto]下，关键字`final`,`const`,`static`下的变量不会被考虑到序列化之中，
+///你可以通过私有变量'_'来控制变量的对外可写性
 class ProtoSerialize {
   final List<JsonSerializeData> datas;
 
@@ -117,6 +124,9 @@ class ProtoSerialize {
     String className = data.className;
     String params = '';
     for (var param in data.params) {
+      if (param.isStatic || param.isConst || param.isFinal) {
+        continue;
+      }
       String paramName = param.name;
       String jsonName = param.jsonName;
       String question = param.isQuestion ? '?' : '';
@@ -140,6 +150,9 @@ class ProtoSerialize {
     String className = data.className;
     String params = '';
     for (var param in data.params) {
+      if (param.isStatic || param.isConst || param.isFinal) {
+        continue;
+      }
       String paramName = param.name;
       String jsonName = param.jsonName;
       String realClass = param.realType;
@@ -190,6 +203,9 @@ class ProtoSerialize {
     String className = data.className;
     String params = '';
     for (var param in data.params) {
+      if (param.isStatic || param.isConst || param.isFinal) {
+        continue;
+      }
       String paramName = param.name;
       String jsonName = param.jsonName;
       String className = param.type;

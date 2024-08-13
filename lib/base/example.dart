@@ -49,6 +49,16 @@ class UnionProtoExample {
 
   double? __e2;
 
+  late double e3;
+
+  late double? e4;
+
+  static bool i = true;
+
+  late final double k = 2.0;
+
+  final double j = 0.0;
+
   static UnionProtoExample fromJson(Map<String, dynamic> json) =>
       _$UnionProtoExampleFromJson(json);
 

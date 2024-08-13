@@ -116,9 +116,6 @@ JsonSerializeParam? _getFieldDeclaration(ClassMember member, DartFile file) {
   if (member is! FieldDeclaration) return null;
   assert(member.fields.variables.length == 1);
   final dec = member.fields.variables.first;
-  if (dec.isFinal) {
-    throw JsonAnalyzeException("final Keyword is not permitted in @proto");
-  }
   return JsonSerializeParam(
     type: member.fields.type.toString(),
     name: dec.name.toString(),
@@ -126,5 +123,8 @@ JsonSerializeParam? _getFieldDeclaration(ClassMember member, DartFile file) {
     comment: member.documentationComment?.commentString,
     token: member.testToken(file),
     isFactory: false,
+    isStatic: member.isStatic,
+    isConst: dec.isConst,
+    isFinal: dec.isFinal,
   );
 }

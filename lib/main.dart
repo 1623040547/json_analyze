@@ -14,5 +14,4 @@ void main() {
   //   'a3': 3.0,
   // });
   // print(model.toJson());
-  BaseProtoExample.fromJson({}).e1;
 }

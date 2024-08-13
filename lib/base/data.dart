@@ -66,6 +66,10 @@ class JsonSerializeParam {
 
   final bool isStatic;
 
+  final bool isConst;
+
+  final bool isFinal;
+
   final bool isFactory;
 
   JsonSerializeParam({
@@ -77,6 +81,8 @@ class JsonSerializeParam {
     this.comment,
     this.annotation,
     this.isStatic = false,
+    this.isConst = false,
+    this.isFinal = false,
   }) {
     if (isMap) {
       throw JsonAnalyzeException("Map is not permitted in @proto");
