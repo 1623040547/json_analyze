@@ -52,7 +52,7 @@ JsonSerializeData? _visit({
         isPart: true,
       ),
     );
-  }else if(node is ImportDirective){
+  } else if (node is ImportDirective) {
     redirects.add(
       JsonSerializeRedirect(
         token: node.testToken(file),
@@ -60,7 +60,7 @@ JsonSerializeData? _visit({
         isImport: true,
       ),
     );
-  }else if(node is PartOfDirective){
+  } else if (node is PartOfDirective) {
     redirects.add(
       JsonSerializeRedirect(
         token: node.testToken(file),
@@ -116,6 +116,9 @@ JsonSerializeParam? _getFieldDeclaration(ClassMember member, DartFile file) {
   if (member is! FieldDeclaration) return null;
   assert(member.fields.variables.length == 1);
   final dec = member.fields.variables.first;
+  if (dec.isFinal) {
+    throw JsonAnalyzeException("final Keyword is not permitted in @proto");
+  }
   return JsonSerializeParam(
     type: member.fields.type.toString(),
     name: dec.name.toString(),
