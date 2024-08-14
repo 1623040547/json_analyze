@@ -24,16 +24,16 @@ class DataMock {
       String params = "";
       for (var param in data.params) {
         ///todo:增加Map类型的随机构造？
-        if (param.isStatic || param.isPrivate || param.isFinal || param.isMap) {
+        if (param.isStatic || param.isFinal || param.isMap) {
           continue;
         }
         params += """
-            \n..${param.name} = ${_baseResolver(param.realType, param.isQuestion, param.isList)}\n
+            \n'${param.jsonName}' : ${_baseResolver(param.realType, param.isQuestion, param.isList)},\n
             """;
       }
       testMethod += """
-        $className get test$className => $className.fromJson({})
-        $params
+        $className get test$className => $className.fromJson({$params})
+        
         ;\n\n
         """;
       methods.add(testMethod);

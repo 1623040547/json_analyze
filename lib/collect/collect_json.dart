@@ -29,7 +29,6 @@ List<JsonSerializeData> collectJsonData() {
       file.filePath,
       visit: collect._visit,
     );
-
     datas.addAll(collect.datas);
   }
   return datas;
