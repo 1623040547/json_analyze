@@ -8,6 +8,8 @@ import '../base/data.dart';
 class DataMock {
   final List<JsonSerializeData> datas;
 
+  late final Set<String> classNames = datas.map((e) => e.className).toSet();
+
   DataMock(this.datas);
 
   Set<String> importNames = {
@@ -27,9 +29,13 @@ class DataMock {
         if (param.isStatic || param.isFinal || param.isMap) {
           continue;
         }
-        params += """
-            \n'${param.jsonName}' : ${_baseResolver(param.realType, param.isQuestion, param.isList, param.isMap)},\n
+        String? value = _baseResolver(
+            param.realType, param.isQuestion, param.isList, param.isMap);
+        if (value != null) {
+          params += """
+            \n'${param.jsonName}' : $value,\n
             """;
+        }
       }
       testMethod += """
         $className get test$className => $className.fromJson({$params})
@@ -63,36 +69,38 @@ class DataMock {
     f.createSync(recursive: true);
     f.writeAsStringSync(DartFormatter().format(fileString));
   }
-}
 
-String _baseResolver(
-    String realType, bool isQuestion, bool isList, bool isMap) {
-  String seed = "";
-  switch (realType) {
-    case 'int':
-      seed = 'ramInt';
-      break;
-    case 'double':
-      seed = 'ramDouble';
-      break;
-    case 'bool':
-      seed = 'ramBool';
-      break;
-    case 'String':
-      seed = 'ramString';
-      break;
-    default:
-      if (isMap) {
-        seed = "{}";
-      } else {
-        seed = "test$realType.toJson()";
-      }
+  String? _baseResolver(
+      String realType, bool isQuestion, bool isList, bool isMap) {
+    String seed = "";
+    switch (realType) {
+      case 'int':
+        seed = 'ramInt';
+        break;
+      case 'double':
+        seed = 'ramDouble';
+        break;
+      case 'bool':
+        seed = 'ramBool';
+        break;
+      case 'String':
+        seed = 'ramString';
+        break;
+      default:
+        if (isMap) {
+          seed = "{}";
+        } else if (classNames.contains(realType)) {
+          seed = "test$realType.toJson()";
+        } else {
+          return null;
+        }
 
-      break;
+        break;
+    }
+    seed = _list(seed, isList);
+    seed = _question(seed, isQuestion);
+    return seed;
   }
-  seed = _list(seed, isList);
-  seed = _question(seed, isQuestion);
-  return seed;
 }
 
 String get _intSeed => "Random().nextInt(1000)";
