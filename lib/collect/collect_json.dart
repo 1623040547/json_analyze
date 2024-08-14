@@ -66,13 +66,13 @@ class JsonSerializableCollect {
     datas.add(JsonSerializeData(
       file: file,
       className: className,
-      params: params.toList(),
+      params: fieldParams.toList(),
       classToken: classNode.testToken(file),
       methods: methods.toList(),
       constructors: constructors.toList(),
       annotation: token.name,
     ));
-    params.clear();
+    fieldParams.clear();
     methods.clear();
     constructors.clear();
   }
