@@ -66,20 +66,20 @@ class JsonSerializableCollect {
     datas.add(JsonSerializeData(
       file: file,
       className: className,
-      params: fieldParams.toList(),
+      params: params.toList(),
       classToken: classNode.testToken(file),
       methods: methods.toList(),
       constructors: constructors.toList(),
       annotation: token.name,
     ));
-    fieldParams.clear();
+    params.clear();
     methods.clear();
     constructors.clear();
   }
 
   void _getParams(ClassMember member) {
     if (member is FieldDeclaration) {
-      _handleFieldDeclarationParameter(member);
+      params.add(_handleFieldDeclarationParameter(member));
     } else if (member is ConstructorDeclaration &&
         member.factoryKeyword == null) {
       for (var param in member.parameters.parameters) {
