@@ -1,7 +1,7 @@
 import 'meta.dart';
-
 part 'example.g.dart';
 
+///Map、jsonKey、
 ///基本数据类型的定义
 @proto
 class BaseProtoExample {

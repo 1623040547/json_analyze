@@ -11,6 +11,7 @@ class JsonAnalyzeException implements Exception {
 
   @override
   String toString() {
+
     return message;
   }
 }

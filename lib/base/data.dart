@@ -89,7 +89,7 @@ class JsonSerializeParam {
     }
   }
 
-  bool get isQuestion => defaultValue == null;
+  bool get isQuestion => type.endsWith('?');
 
   bool get isUnionParam => !isBaseParam;
 
