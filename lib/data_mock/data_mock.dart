@@ -23,7 +23,8 @@ class DataMock {
       final className = data.className;
       String params = "";
       for (var param in data.params) {
-        if (param.isStatic || param.isPrivate || param.isFinal) {
+        ///todo:增加Map类型的随机构造？
+        if (param.isStatic || param.isPrivate || param.isFinal || param.isMap) {
           continue;
         }
         params += """

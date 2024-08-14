@@ -23,9 +23,8 @@ List<JsonSerializeData> collectFreezeData() {
       file.filePath,
       visit: collect._visit,
     );
-    if (collect.data != null) {
-      datas.add(collect.data!);
-    }
+
+    datas.addAll(collect.datas);
   }
   return datas;
 }
@@ -39,7 +38,7 @@ class FreezeCollect {
 
   List<JsonSerializeConstructor> constructors = [];
 
-  JsonSerializeData? data;
+  List<JsonSerializeData> datas = [];
 
   FreezeCollect(this.file);
 
@@ -57,7 +56,7 @@ class FreezeCollect {
       _getMethods(member);
       _getConstructors(member);
     }
-    data = JsonSerializeData(
+    datas.add(JsonSerializeData(
       file: file,
       className: className,
       params: params,
@@ -65,7 +64,7 @@ class FreezeCollect {
       methods: methods,
       constructors: constructors,
       annotation: token.name,
-    );
+    ));
   }
 
   void _getParams(ClassMember member) {

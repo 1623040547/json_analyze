@@ -29,9 +29,8 @@ List<JsonSerializeData> collectJsonData() {
       file.filePath,
       visit: collect._visit,
     );
-    if (collect.data != null) {
-      datas.add(collect.data!);
-    }
+
+    datas.addAll(collect.datas);
   }
   return datas;
 }
@@ -47,7 +46,7 @@ class JsonSerializableCollect {
 
   List<JsonSerializeConstructor> constructors = [];
 
-  JsonSerializeData? data;
+  List<JsonSerializeData> datas = [];
 
   JsonSerializableCollect(this.file);
 
@@ -65,7 +64,7 @@ class JsonSerializableCollect {
       _getMethods(member);
       _getConstructors(member);
     }
-    data = JsonSerializeData(
+    datas.add(JsonSerializeData(
       file: file,
       className: className,
       params: params,
@@ -73,7 +72,7 @@ class JsonSerializableCollect {
       methods: methods,
       constructors: constructors,
       annotation: token.name,
-    );
+    ));
   }
 
   void _getParams(ClassMember member) {
