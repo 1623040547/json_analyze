@@ -84,9 +84,10 @@ class JsonSerializeParam {
     this.isConst = false,
     this.isFinal = false,
   }) {
-    if (isMap) {
-      throw JsonAnalyzeException("Map is not permitted in @proto");
-    }
+    ///todo：允许Map类型
+    // if (isMap) {
+    //   throw JsonAnalyzeException("Map is not permitted in @proto");
+    // }
   }
 
   bool get isQuestion => type.endsWith('?');

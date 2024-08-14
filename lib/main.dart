@@ -1,6 +1,5 @@
 import 'package:json_analyze/collect/collect_freeze.dart';
 import 'package:json_analyze/collect/collect_json.dart';
-import 'package:json_analyze/serialize/serialize_proto.dart';
 
 import 'base/data.dart';
 import 'collect/collect_proto.dart';
