@@ -59,12 +59,15 @@ class FreezeCollect {
     datas.add(JsonSerializeData(
       file: file,
       className: className,
-      params: params,
+      params: params.toList(),
       classToken: classNode.testToken(file),
-      methods: methods,
-      constructors: constructors,
+      methods: methods.toList(),
+      constructors: constructors.toList(),
       annotation: token.name,
     ));
+    params.clear();
+    methods.clear();
+    constructors.clear();
   }
 
   void _getParams(ClassMember member) {
