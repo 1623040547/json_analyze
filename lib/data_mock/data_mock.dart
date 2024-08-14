@@ -81,7 +81,7 @@ String _baseResolver(String realType, bool isQuestion, bool isList) {
       seed = 'ramString';
       break;
     default:
-      seed = "test$realType";
+      seed = "test$realType.toJson()";
       break;
   }
   seed = _list(seed, isList);
