@@ -39,11 +39,13 @@ BaseProtoExample get testBaseProtoExample => BaseProtoExample.fromJson({
     });
 
 UnionProtoExample get testUnionProtoExample => UnionProtoExample.fromJson({
-      'baseParam': testBaseProtoExample,
-      'baseParams': List.generate(ramInt, (index) => testBaseProtoExample),
-      'baseParamNullable': testBaseProtoExample.ramNull,
+      'baseParam': testBaseProtoExample.toJson(),
+      'baseParams':
+          List.generate(ramInt, (index) => testBaseProtoExample.toJson()),
+      'baseParamNullable': testBaseProtoExample.toJson().ramNull,
       'baseParamsNullable':
-          List.generate(ramInt, (index) => testBaseProtoExample).ramNull,
+          List.generate(ramInt, (index) => testBaseProtoExample.toJson())
+              .ramNull,
       'e2': ramDouble.ramNull,
       '_e2': ramDouble.ramNull,
       'e3': ramDouble,

@@ -28,7 +28,7 @@ class DataMock {
           continue;
         }
         params += """
-            \n'${param.jsonName}' : ${_baseResolver(param.realType, param.isQuestion, param.isList)},\n
+            \n'${param.jsonName}' : ${_baseResolver(param.realType, param.isQuestion, param.isList, param.isMap)},\n
             """;
       }
       testMethod += """
@@ -65,7 +65,8 @@ class DataMock {
   }
 }
 
-String _baseResolver(String realType, bool isQuestion, bool isList) {
+String _baseResolver(
+    String realType, bool isQuestion, bool isList, bool isMap) {
   String seed = "";
   switch (realType) {
     case 'int':
@@ -81,7 +82,12 @@ String _baseResolver(String realType, bool isQuestion, bool isList) {
       seed = 'ramString';
       break;
     default:
-      seed = "test$realType.toJson()";
+      if (isMap) {
+        seed = "{}";
+      } else {
+        seed = "test$realType.toJson()";
+      }
+
       break;
   }
   seed = _list(seed, isList);
