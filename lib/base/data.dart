@@ -84,10 +84,10 @@ class JsonSerializeParam {
     this.isConst = false,
     this.isFinal = false,
   }) {
-    ///todo：允许Map类型
-    // if (isMap) {
-    //   throw JsonAnalyzeException("Map is not permitted in @proto");
-    // }
+    if (isMap && !isJsonMap) {
+      print(type);
+      throw JsonAnalyzeException("Map is not permitted in @proto");
+    }
   }
 
   bool get isQuestion => type.endsWith('?');
@@ -98,9 +98,18 @@ class JsonSerializeParam {
 
   bool get isMap => type.startsWith('Map<');
 
+  bool get isJsonMap =>
+      type.replaceAll(' ', '').startsWith("Map<String,dynamic>");
+
+  bool get containsJsonMap =>
+      type.replaceAll(' ', '').contains('Map<String,dynamic>');
+
   bool get isPrivate => name.startsWith('_');
 
   String get realType {
+    if (isMap || (containsJsonMap && isList)) {
+      return 'Map<String, dynamic>';
+    }
     return type.replaceAll('List<', '').replaceAll('>', '').replaceAll('?', '');
   }
 
@@ -132,6 +141,12 @@ class JsonSerializeParam {
         ///检测类型声明是否遗漏
         throw JsonAnalyzeException("Param miss TypeAnnotation ${token.name}");
       default:
+        if (isMap) {
+          return true;
+        }
+        if (isList && containsJsonMap) {
+          return true;
+        }
         return false;
     }
   }

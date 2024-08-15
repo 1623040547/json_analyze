@@ -103,6 +103,10 @@ Map<String, dynamic> _$BaseProtoExampleToJson(BaseProtoExample instance) => {
       'd3': instance.d3,
       'd4': instance.d4,
       'e1': instance._e1,
+      'a5': instance.a5,
+      'b5': instance.b5,
+      'c5': instance.c5,
+      'd5': instance.d5,
     }..removeWhere((key, value) => value == null);
 
 BaseProtoExample _$BaseProtoExampleFromJson(Map<String, dynamic> json) {
@@ -184,6 +188,24 @@ BaseProtoExample _$BaseProtoExampleFromJson(Map<String, dynamic> json) {
     instance._e1 = e1;
   }
 
+  Map<String, dynamic>? a5 = _getType<Map<String, dynamic>>(json['a5']);
+  if (a5 != null) {
+    instance.a5 = a5;
+  }
+
+  Map<String, dynamic>? b5 = _getType<Map<String, dynamic>>(json['b5']);
+  if (b5 != null) {
+    instance.b5 = b5;
+  }
+
+  List<Map<String, dynamic>>? c5 = _getList<Map<String, dynamic>>(json['c5']);
+  if (c5 != null) {
+    instance.c5 = c5;
+  }
+  List<Map<String, dynamic>>? d5 = _getList<Map<String, dynamic>>(json['d5']);
+  if (d5 != null) {
+    instance.d5 = d5;
+  }
   return instance;
 }
 

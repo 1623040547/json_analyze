@@ -1,4 +1,5 @@
 import 'meta.dart';
+
 part 'example.g.dart';
 
 ///Map、jsonKey、
@@ -10,20 +11,24 @@ class BaseProtoExample {
   String a2 = "";
   double a3 = 0;
   bool a4 = true;
+  Map<String, dynamic> a5 = {};
   List<int> b1 = [];
   List<String> b2 = ["iap"];
   List<double> b3 = [];
   List<bool> b4 = [];
+  Map<String, dynamic>? b5 = {};
 
   ///可空类型
   int? c1;
   String? c2;
   double? c3;
   bool? c4;
+  List<Map<String, dynamic>> c5 = [];
   List<int>? d1;
   List<String>? d2;
   List<double>? d3;
   List<bool>? d4;
+  List<Map<String, dynamic>?> d5 = [];
 
   int _e1 = 0;
 
